@@ -2,33 +2,28 @@ defmodule Docker.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :docker,
-     version: "0.0.1",
-     elixir: "~> 1.0",
-     description: desc,
-     package: package,
-     deps: deps]
+    [
+      app: :docker,
+      version: "0.1.0",
+      elixir: "~> 1.9",
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
   end
 
   def application do
-    [applications: [
-        :logger,
-        :exjsx,
-        :hackney,
-    ]]
+    [
+      extra_applications: [:logger],
+      mod: {Docker.Application, []}
+    ]
   end
 
   defp deps do
     [
-      {:exjsx, "~> 3.0"},
-      {:hackney, "~> 1.0.6"},
+      {:jason, "~> 1.1"},
+      {:hackney, "~> 1.14.0"},
+      {:tesla, "~> 1.2.1"}
     ]
-  end
-
-  defp desc do
-    """
-    Docker API Binding
-    """
   end
 
   defp package do
