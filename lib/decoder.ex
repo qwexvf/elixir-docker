@@ -1,4 +1,3 @@
-
 defmodule Docker.PackedDecoder do
   @behaviour Docker.Decoder
 
