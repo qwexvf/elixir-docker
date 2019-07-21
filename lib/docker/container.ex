@@ -6,6 +6,7 @@ defmodule Docker.Container do
 
   def list(srv) do
     req = Request.get "/containers/json"
+
     case GenServer.call(srv, req) do
       {:ok, list} ->
         {:ok, Enum.map(list, &(from_json(srv,&1))) }
@@ -13,6 +14,7 @@ defmodule Docker.Container do
         {:error, err}
     end
   end
+
   def create(srv, name, body) do
     req = Request.post("/containers/create")
        |> Request.query([name: name])
@@ -108,9 +110,7 @@ defmodule Docker.Container do
   #end
 
   #private func
-  defp from_json(srv,json) do
-    Enum.into(json, %Container{id: json["Id"], server: srv})
+  defp from_json(srv, json) do
+    Enum.into(json, [%Container{id: json["Id"], server: srv}])
   end
-end #defmodule Container
-
-
+end

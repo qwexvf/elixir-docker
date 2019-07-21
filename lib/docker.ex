@@ -1,7 +1,6 @@
 defmodule Docker do
   require Logger
   use GenServer
-  use Tesla
 
   alias HTTPoison.AsyncResponse
   alias HTTPoison.AsyncStatus
@@ -74,7 +73,7 @@ defmodule Docker do
   end
 
   def start_link(opts) do
-    GenServer.start_link(__MODULE__, opts)
+    GenServer.start_link(__MODULE__,opts)
   end
 
   def init(opts) do
@@ -190,22 +189,11 @@ defmodule Docker do
 
   defp mkbody(ctx, req) do
     if req.body do
-      JSX.encode! req.body
+      Jason.encode! req.body
     else
       ""
     end
   end
-
-  def client(baseUrl) do
-    middleware = [
-      {Tesla.Middleware.BaseUrl, baseUrl},
-      Tesla.Middleware.JSON,
-      {Tesla.Middleware.Headers, [{"Content-Type", "application/json" }]}
-    ]
-
-    Tesla.client(middleware)
-  end 
-
 
   defp mkopts(ctx, opts) do
     opts
@@ -292,4 +280,3 @@ defmodule Docker do
       reply req, {:error,:badarg}
   end
 end
-

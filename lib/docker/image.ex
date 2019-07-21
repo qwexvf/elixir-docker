@@ -3,6 +3,7 @@ defmodule Docker.Image do
   alias Docker.Request
 
   defstruct id: "", server: nil
+
   def list(srv) do
     req = Request.get "/images/json"
     case GenServer.call(srv, req) do
@@ -40,5 +41,4 @@ defmodule Docker.Image do
   def from_json(srv,json) do
     Enum.into(json, %Image{id: json["Id"], server: srv})
   end
-end #defmodule Image
-
+end
